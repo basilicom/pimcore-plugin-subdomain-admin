@@ -11,23 +11,24 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
 
     public function init() {
 
-        // Don't use plugin if there is no domain set
+        // Disable plugin if the allowed domain is not yet set
         $settingDomain = WebsiteSetting::getByName("subdomainAdmin");
         if (!is_object($settingDomain) || $settingDomain->getData() == "") {
             return;
         }
 
 
-        // Disable main domain for to allow admin access on another domain
-        $conf = Config::getSystemConfig();
-        $mainDomain = $conf->general->domain;
 
+        // Create temporary request object - not available yet in front controller
         $currentUrl = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
         $request = new \Zend_Controller_Request_Http($currentUrl);
 
-        if (Tool::isRequestToAdminBackend($request)
-            && Tool::isDomainAllowedToAdminBackend($request)
-        ) {
+
+        // Disable main domain setting to allow admin access on another domain
+        $conf = Config::getSystemConfig();
+        $mainDomain = $conf->general->domain;
+
+        if (Tool::isRequestToAdminBackend($request) && Tool::isDomainAllowedToAdminBackend($request)) {
             $confArr = $conf->toArray();
             $mainDomain = $confArr['general']['domain'];
             $confArr['general']['domain'] = "";
@@ -58,12 +59,12 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
         $websiteSetting = new WebsiteSetting();
         $websiteSetting->setValues($dataWebsiteSetting);
         $websiteSetting->save();
+
         if (self::isInstalled()) {
-            return "Plugin successfuly installed.";
+            return "Plugin successfully installed.";
         } else {
             return "Plugin was not successfully installed.";
         }
-
 	}
 	
 	public static function uninstall (){
@@ -76,6 +77,6 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
 
     public static function needsReloadAfterInstall()
     {
-        return false; // backend only functionality!
+        return true;
     }
 }

@@ -36,12 +36,14 @@ class SubdomainAdmin_AdminTest extends PHPUnit_Framework_TestCase {
     public function testIsDomainAllowedToAdminBackend()
     {
         $_SERVER['HTTP_HOST'] = "www.domain.com";
-        $request = new Zend_Controller_Request_Http("http://www.domain.com/test/admin/test");
+        $request = new Zend_Controller_Request_Http(
+            "http://www.domain.com/test/admin/test"
+        );
         $this->assertFalse(SubdomainAdmin\Tool::isDomainAllowedToAdminBackend($request));
 
         $_SERVER['HTTP_HOST'] = \SubdomainAdmin\Tool::getAllowedDomain();
         $request = new Zend_Controller_Request_Http(
-            "http://". \SubdomainAdmin\Tool::getAllowedDomain() . "/test/admin/test"
+            "https://". \SubdomainAdmin\Tool::getAllowedDomain() . "/test/admin/test"
         );
         $this->assertTrue(\SubdomainAdmin\Tool::isDomainAllowedToAdminBackend($request));
     }
