@@ -30,6 +30,11 @@ Example:
         }
     }
 
+## Troubleshooting
+
+In case you lose access to the admin area due to misconfiguration you have two options:
+- disable plugin by editing /website/var/config/extensions.xml (change the value to 0 or delete the whole line)
+- remove Website Setting by deleting the corresponding row (subdomainAdmin) in website_settings table in the database
 
 ## Contributors
 
