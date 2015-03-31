@@ -11,7 +11,7 @@ on another subdomain/domain set in Website Settings.
 ## Code Example / Method of Operation
 
 After installing the plugin there is a new website setting available (under Settings > Website) with name
-**subdomainAdmin**. Set it to the domain that you want your admin accessible after (eg. admin.yourdomain.com).
+**subdomainAdmin**. Set it to the domain that you want your admin accessible after (e.g. admin.yourdomain.com).
 
 ## Motivation
 
@@ -34,9 +34,7 @@ Example:
 
 ## Contributors
 
-* Contributors
-  
-Igor Benko igor.benko@basilicom.de
+* Igor Benko igor.benko@basilicom.de
 
 
 ## License
