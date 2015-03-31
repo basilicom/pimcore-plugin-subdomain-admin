@@ -7,11 +7,13 @@ use Pimcore\Model\WebsiteSetting;
 
 class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterface {
 
+    const WEBSITE_SETTING_NAME = "subdomainAdmin";
+
     public function init() {
 
         // Don't use plugin if there is no domain set
         $settingDomain = WebsiteSetting::getByName("subdomainAdmin");
-        if (!is_object($settingDomain) || $settingDomain == "") {
+        if (!is_object($settingDomain) || $settingDomain->getData() == "") {
             return;
         }
 
@@ -48,18 +50,28 @@ class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterfa
     }
 
     public static function install (){
-        // TODO create website setting here
-        return true;
+        $dataWebsiteSetting = [
+            "name" => self::WEBSITE_SETTING_NAME,
+            "type" => "text",
+            "data" => ""
+        ];
+        $websiteSetting = new WebsiteSetting();
+        $websiteSetting->setValues($dataWebsiteSetting);
+        $websiteSetting->save();
+        if (self::isInstalled()) {
+            return "Plugin successfuly installed.";
+        } else {
+            return "Plugin was not successfully installed.";
+        }
+
 	}
 	
 	public static function uninstall (){
-        // TODO remove website setting here
-        return true;
+        return "To uninstall just manually remove related website settings.";
 	}
 
 	public static function isInstalled () {
-        // TODO check here if website setting exists
-        return true;
+        return WebsiteSetting::getByName(self::WEBSITE_SETTING_NAME) !== null;
 	}
 
     public static function needsReloadAfterInstall()
