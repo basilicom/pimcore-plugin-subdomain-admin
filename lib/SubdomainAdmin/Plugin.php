@@ -1,47 +1,69 @@
 <?php
-
 namespace SubdomainAdmin;
 
 use Pimcore\API\Plugin as PluginLib;
+use Pimcore\Config;
+use Pimcore\Model\WebsiteSetting;
 
 class Plugin extends PluginLib\AbstractPlugin implements PluginLib\PluginInterface {
 
     public function init() {
-        // register your events here
 
-        // using anonymous function
-        \Pimcore::getEventManager()->attach("document.postAdd", function ($event) {
-            // do something
-            $document = $event->getTarget();
+        // Don't use plugin if there is no domain set
+        $settingDomain = WebsiteSetting::getByName("subdomainAdmin");
+        if (!is_object($settingDomain) || $settingDomain == "") {
+            return;
+        }
+
+
+        // Disable main domain for to allow admin access on another domain
+        $conf = Config::getSystemConfig();
+        $mainDomain = $conf->general->domain;
+
+        $currentUrl = 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://' . "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+        $request = new \Zend_Controller_Request_Http($currentUrl);
+
+        if (Tool::isRequestToAdminBackend($request)
+            && Tool::isDomainAllowedToAdminBackend($request)
+        ) {
+            $confArr = $conf->toArray();
+            $mainDomain = $confArr['general']['domain'];
+            $confArr['general']['domain'] = "";
+            Config::setSystemConfig(new \Zend_Config($confArr));
+        }
+
+
+        // Register plugin
+        \Pimcore::getEventManager()->attach("system.startup", function ($event) use (&$mainDomain) {
+            $front = \Zend_Controller_Front::getInstance();
+            $frontControllerPlugin = new FrontControllerPlugin();
+            $front->registerPlugin($frontControllerPlugin);
+
+            // Restore main domain
+            $conf = Config::getSystemConfig();
+            $confArr = $conf->toArray();
+            $confArr['general']['domain'] = $mainDomain;
+            Config::setSystemConfig(new \Zend_Config($confArr));
         });
-
-        // using methods
-        \Pimcore::getEventManager()->attach("document.postUpdate", array($this, "handleDocument"));
-
-        // for more information regarding events, please visit:
-        // http://www.pimcore.org/wiki/display/PIMCORE/Event+API+%28EventManager%29+since+2.1.1
-        // http://framework.zend.com/manual/1.12/de/zend.event-manager.event-manager.html
-        // http://www.pimcore.org/wiki/pages/viewpage.action?pageId=12124202
-
     }
 
-    public function handleDocument ($event) {
-        // do something
-        $document = $event->getTarget();
-    }
-
-	public static function install (){
-        // implement your own logic here
+    public static function install (){
+        // TODO create website setting here
         return true;
 	}
 	
 	public static function uninstall (){
-        // implement your own logic here
+        // TODO remove website setting here
         return true;
 	}
 
 	public static function isInstalled () {
-        // implement your own logic here
+        // TODO check here if website setting exists
         return true;
 	}
+
+    public static function needsReloadAfterInstall()
+    {
+        return false; // backend only functionality!
+    }
 }

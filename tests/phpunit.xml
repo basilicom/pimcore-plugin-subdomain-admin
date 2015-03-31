@@ -1,0 +1,8 @@
+<phpunit bootstrap="bootstrap.php" colors="true" syntaxCheck="false" verbose="false">
+    <testsuites>
+        <testsuite name="Subdomain">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
+
