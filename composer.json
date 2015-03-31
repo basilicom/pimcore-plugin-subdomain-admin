@@ -2,7 +2,7 @@
   "name": "basilicom-pimcore-plugin/subdomain-admin",
   "type": "pimcore-plugin",
   "license": "BSD-3-Clause",
-  "description": "A Pimcore plugin that disables access to the backend through the standard route /admin",
+  "description": "A Pimcore plugin that disables access to the admin backend through the main domain and enables it on another domain",
   "keywords": ["pimcore", "plugin", "admin", "administration", "subdomain"],
   "homepage": "http://basilicom.de/en/pimcore",
   "authors": [
