@@ -1,6 +1,12 @@
 SubdomainAdmin Pimcore Plugin
 ================================================
-    
+
+[![Codacy Badge](https://www.codacy.com/project/badge/12cdbcbe42ac4a35ad3997f1bb4a7c30)](https://www.codacy.com/app/basilicom/pimcore-plugin-subdomain-admin)
+[![Dependency Status](https://www.versioneye.com/php/basilicom-pimcore-plugin:subdomain-admin/1.0.0/badge.svg)](https://www.versioneye.com/php/basilicom-pimcore-plugin:subdomain-admin/1.0.0)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/basilicom/pimcore-plugin-subdomain-admin/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/basilicom/pimcore-plugin-subdomain-admin/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/basilicom/pimcore-plugin-subdomain-admin/badges/build.png?b=master)](https://scrutinizer-ci.com/g/basilicom/pimcore-plugin-subdomain-admin/build-status/master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/59e3ce1e-89b7-4434-8ad2-e38bbac17c16/mini.png)](https://insight.sensiolabs.com/projects/59e3ce1e-89b7-4434-8ad2-e38bbac17c16)
+
 Developer info: [Pimcore at basilicom](http://basilicom.de/en/pimcore)
 
 ## Synopsis
